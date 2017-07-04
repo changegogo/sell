@@ -8,7 +8,12 @@
     	<div class="tab-item">评价</div>
     	<div class="tab-item">商家</div>
     </div>
-    <div id="content">主体内容</div>
+    <div id="content">
+    	<p>主体内容</p>
+    	<router-link to="/home">主页</router-link>
+		<router-link to="/news">新闻</router-link>
+		<router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -22,9 +27,6 @@
 </script>
 
 <style>
-	#app {
-		
-	}
 	.tab{
 		display: flex;
 		width: 100%;
