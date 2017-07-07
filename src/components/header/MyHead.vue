@@ -11,7 +11,7 @@
 				</div>
 				<div class="description">{{headdata.description}}/{{headdata.deliveryTime}}分钟送达</div>
 				<div class="support" v-if="headdata.supports">
-					<span class="icon" :class="classMap[headdata.supports[0].type]"></span>
+					<icon-type v-if="headdata.supports[0].type>=0" :type='headdata.supports[0].type'></icon-type>
 					<span class="text">{{headdata.supports[0].description}}</span>
 				</div>
 			</div>
@@ -42,7 +42,7 @@
 						</div>
 						<ul v-if="headdata.supports" class="supports">
 							<li class="support-item" v-for="item in headdata.supports">
-								<span class="icon" :class="classMap[item.type]"></span>
+								<icon-type v-if="item.type>0" :type='item.type'></icon-type>
 								<span class="text">{{item.description}}</span>
 							</li>
 						</ul>
@@ -68,10 +68,12 @@
 
 <script>
 	import Star from '../star/Star.vue'
+	import IconType from '../icontype/IconType'
 	export default {
 		name: 'header',
 		components: {
-			Star
+			Star,
+			IconType
 		},
 		data(){
 			return {
@@ -92,7 +94,7 @@
 	}
 </script>
 	
-<style>
+<style scoped>
 	#header {
 		background: rgba(7,17,27,0.5);
 		color: white;
@@ -138,33 +140,10 @@
 		line-height: 12px;
 		font-size: 12px;
 	}
-	.support .icon{
-		display: inline-block;
-		vertical-align: top;
-		width: 10px;
-		height: 10px;
-		margin-right: 4px;
-		background-size: 10px 10px;
-		background-repeat: no-repeat;
-	}
+	
 	.text {
 		line-height: 12px;
 		font-size: 10px;
-	}
-	.decrease {
-		background-image: url(decrease_1@2x.png);
-	}
-	.discount {
-		background-image: url(discount_1@2x.png);
-	}
-	.special {
-		background-image: url(special_1@2x.png);
-	}
-	.invoice {
-		background-image: url(invoice_1@2x.png);
-	}
-	.guarantee {
-		background-image: url(guarantee_1@2x.png);
 	}
 	.support-count {
 		position: absolute;
