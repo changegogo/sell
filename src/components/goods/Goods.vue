@@ -29,18 +29,27 @@
 									<span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
 								</div>
 							</div>
+							<div class="cartcontrol-wrapper">
+								<cart-control :food="food"></cart-control>
+							</div>
+							
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</div>
-		<shop-cart :deliveryprice="seller.deliveryPrice" :minprice="seller.minPrice"></shop-cart>
+		<shop-cart 
+			:deliveryprice="Number.parseInt(seller.deliveryPrice)" 
+			:minprice="Number.parseInt(seller.minPrice)"
+			:selectFoods="selectFoods">
+		</shop-cart>
 	</div>
 </template>
 
 <script>
 	import IconType from '../icontype/IconType'
 	import ShopCart from '../shopCart/ShopCart'
+	import CartControl from '../cartControl/CartControl'
 	import BScroll from 'better-scroll'
 	const STATUS = 200;
 	export default {
@@ -53,7 +62,8 @@
 		},
 		components: {
 			IconType,
-			ShopCart
+			ShopCart,
+			CartControl
 		},
 		props: {
 			seller: {
@@ -81,6 +91,17 @@
 					}
 				}
 				return 0;
+			},
+			selectFoods() {
+				let foods = [];
+				this.goods.forEach((good)=>{
+					good.foods.forEach((food)=>{
+						if(food.count){
+							foods.push(food);	
+						}
+					});
+				});
+				return foods;
 			}
 		},
 		methods: {
@@ -89,6 +110,7 @@
 					click: true
 				});
 				this.foodScroll = new BScroll(this.$refs.foodwrapper, {
+					click: true,
 					probeType: 3
 				});
 				this.foodScroll.on('scroll', (pos)=>{
@@ -168,10 +190,16 @@
 		background: #f3f5f7;
 	}
 	.food-item {
+		position: relative;
 		display: flex;
 		margin: 18px;
 		padding-bottom: 18px;
 		border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+	}
+	.cartcontrol-wrapper {
+		position: absolute;
+		right: 0;
+		bottom: 0;
 	}
 	.ulfoodParent li:last-child {
 		margin-bottom: 0;
@@ -217,6 +245,7 @@
 		font-size: 10px;
 		color: rgb(147, 153, 159);
 	}
+
 	
 	
 	

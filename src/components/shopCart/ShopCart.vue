@@ -3,16 +3,19 @@
 		<div class="content">
 			<div class="content-left">
 				<div class="logo-wrapper">
-					<div class="logo">
-						<span class="icon-shopping_cart"></span>
+					<div class="logo" :class="{logoHighLight: totalCount>0}"> 
+						<span class="icon-shopping_cart" :class="{'icon-shopping_cart_font': totalCount>0}"></span>
+					</div>
+					<div class="num" v-show="totalCount>0">
+						{{totalCount}}
 					</div>
 				</div>
-				<div class="price">￥{{totalPrice}}</div>
+				<div class="price" :class="{pricehighLight: totalPrice>0}">￥{{totalPrice}}</div>
 				<div class="desc">另需配送费￥{{deliveryprice}}元</div>
 			</div>
 			<div class="content-right">
-				<div class="pay">
-					￥{{minprice}}元起送
+				<div class="pay" :class="{enough: payDesc==='去结算'}">
+					{{payDesc}}
 				</div>
 			</div>
 		</div>
@@ -25,31 +28,43 @@
 		props: {
 			deliveryprice: {
 				type: Number,
-				require: true
+				required: true
 			},
 			minprice: {
 				type: Number,
-				require: true
+				required: true
 			},
 			selectFoods: {
 				type: Array,
 				default(){
 					return []
-				}
-			}
-		},
-		data(){
-			return {
-				
+				},
+				required: true
 			}
 		},
 		computed: {
-			totalPrice(){
+			totalPrice() {
 				let total = 0;
 				this.selectFoods.forEach((food)=>{
 					total += food.price * food.count;
 				});
 				return total;
+			},
+			totalCount() {
+				let count = 0;
+				this.selectFoods.forEach(function(food){
+					count += food.count;
+				});
+				return count;
+			},
+			payDesc() {
+				if(this.totalPrice===0){
+					return `￥${this.minprice}元起送`;
+				}else if(this.totalPrice<this.minprice){
+					return `还差￥${this.minprice-this.totalPrice}元起送`;
+				}else{
+					return '去结算';
+				}
 			}
 		}
 	}
@@ -86,6 +101,21 @@
 		border-radius: 50%;
 		background: #141d27;
 	}
+	.num {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 24px;
+		height: 16px;
+		line-height: 16px;
+		text-align: center;
+		border-radius: 16px;
+		font-size: 9px;
+		font-weight: 700;
+		color: #fff;
+		background: rgb(240, 20, 20);
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+	}
 	.logo {
 		width: 100%;
 		height: 100%;
@@ -93,10 +123,16 @@
 		background: #2b343c;
 		text-align: center;
 	}
+	.logoHighLight {
+		background: rgb(0, 160, 220);
+	}
 	.icon-shopping_cart {
 		line-height: 44px;
 		font-size: 24px;
 		color: #80858a;
+	}
+	.icon-shopping_cart_font {
+		color: #fff;
 	}
 	.price {
 		display: inline-block;
@@ -108,6 +144,9 @@
 		border-right: 1px solid rgba(255,255,255,0.1);
 		font-size: 16px;
 		font-weight: 700;
+	}
+	.pricehighLight {
+		color: #fff;
 	}
 	.desc {
 		display: inline-block;
@@ -128,5 +167,10 @@
 		text-align: center;
 		font-size: 12px;
 		font-weight: 700;
+		background: #2b333b;
+	}
+	.enough {
+		background: #00b43c;
+		color: #fff;
 	}
 </style>
