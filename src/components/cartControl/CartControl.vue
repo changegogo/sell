@@ -39,8 +39,14 @@
 				}else{
 					this.food.count++;
 				}
+				this.$nextTick(()=>{
+					this.$emit('cartadd', event.target);
+				});
 			},
 			decShop(event){
+				if(this.food.count<=0){
+					return;
+				}
 				if(!event._constructed){
 					return;
 				}

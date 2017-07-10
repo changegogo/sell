@@ -30,7 +30,7 @@
 								</div>
 							</div>
 							<div class="cartcontrol-wrapper">
-								<cart-control :food="food"></cart-control>
+								<cart-control :food="food" v-on:cartadd="cartadd"></cart-control>
 							</div>
 							
 						</li>
@@ -39,6 +39,7 @@
 			</ul>
 		</div>
 		<shop-cart 
+			ref = "shopcart"
 			:deliveryprice="Number.parseInt(seller.deliveryPrice)" 
 			:minprice="Number.parseInt(seller.minPrice)"
 			:selectFoods="selectFoods">
@@ -133,6 +134,9 @@
 					let el = foodList[index];
 					this.foodScroll.scrollToElement(el, 300);
 				}
+			},
+			cartadd(target){
+				this.$refs.shopcart.drop(target);
 			}
 		}
 	}
@@ -162,10 +166,8 @@
 		width: 56px;
 		line-height: 14px;
 		border-bottom: 1px solid rgba(7,17,27,0.1);
-		padding: 0 12px;
-	}
-	.ulMenuParent li:last-child {
-		border: 0;
+		border-left: 2px solid #f3f5f7;
+		padding: 0 11px;
 	}
 	.current {
 		position: relative;
@@ -173,7 +175,12 @@
 		z-index: 10;
 		background: white;
 		font-weight: 700;
+		border-left: 2px solid rgb(0, 160, 220);
 	}
+	.ulMenuParent li:last-child {
+		border-bottom: 0;
+	}
+	
 	.text{
 		display: table-cell;
 		font-size: 12px;
