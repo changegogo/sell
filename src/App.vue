@@ -15,7 +15,11 @@
     	</div>
     </div>
     <div id="content">
-		<router-view :seller="seller"></router-view>
+    	<transition name="fade">
+				<keep-alive>
+					<router-view :seller="seller"></router-view>
+				</keep-alive>
+			</transition>
     </div>
   </div>
 </template>
@@ -52,6 +56,7 @@
 </script>
 
 <style>
+	
 	.tab{
 		display: flex;
 		width: 100%;
@@ -77,6 +82,13 @@
 	}
 	.router-link-active {
 		color: rgb(240,20,20);
+	}
+	
+	.fade-enter-active, .fade-leave-active {
+	  transition: opacity .5s
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+	  opacity: 0
 	}
 	
 </style>
